@@ -1,22 +1,26 @@
 import Product from "../models/product";
 import { productSchema } from "../Schema/product";
 export const getAll = async (req, res) => {
-
   //asc tăng dần
-  const { order = "createdAt", _limit = 100, keyword = "asc", size, color, category, seach } = req.query;
+  const {
+    order = "createdAt",
+    _limit = 100,
+    keyword = "asc",
+    size,
+    color,
+    category,
+    seach,
+  } = req.query;
   const filter = {};
   if (size) {
     filter["colorSizes.sizes.size"] = size;
-
   }
   if (color) {
     filter["colorSizes.color"] = color;
   }
   if (category) {
-
     filter["categoryId"] = category; // Tạo bộ lọc cho trường categoryId
   }
-
 
   let option = {
     limit: _limit,
@@ -49,7 +53,7 @@ export const getAll = async (req, res) => {
 export const getSearch = async (req, res) => {
   try {
     const search = req.query.search;
-    const regex = new RegExp(search, 'i')
+    const regex = new RegExp(search, "i");
     const product = await Product.paginate({ name: regex });
     if (product.length === 0) {
       return res.json({
@@ -62,7 +66,9 @@ export const getSearch = async (req, res) => {
     });
   } catch (error) {
     if (error.name === "CastError") {
-      return res.status(400).json({ message: "Không có sản phẩm nào có tên đó" });
+      return res
+        .status(400)
+        .json({ message: "Không có sản phẩm nào có tên đó" });
     }
     return res.status(500).json({ message: "Lỗi server" });
   }
