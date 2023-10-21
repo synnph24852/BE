@@ -9,6 +9,13 @@ const imageProductSchema = new mongoose.Schema(
       enum: ["active", "deactive"],
       default: "active",
     },
+    products: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+    ],
   },
   {
     timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 },
