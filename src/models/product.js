@@ -19,7 +19,7 @@ const colorSizeSchema = new Schema(
   {
     color: {
       type: String,
-      enum: ["green", "blue", "pink", "red", "indigo", "yellow", "orange",],
+      enum: ["green", "blue", "pink", "red", "indigo", "yellow", "orange"],
     },
     sizes: [sizeQuantitySchema],
   },
@@ -31,7 +31,12 @@ const productSchema = new Schema(
     name: String,
     price: Number,
     priceSale: Number,
-    image: Array,
+    image: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "imageProduct",
+      },
+    ],
     rating: {
       type: Number,
       default: 0,
@@ -65,7 +70,10 @@ const productSchema = new Schema(
     },
     colorSizes: [colorSizeSchema],
   },
-  { timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 }, versionKey: false }
+  {
+    timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 },
+    versionKey: false,
+  }
 );
 productSchema.pre("save", function (next) {
   if (this.isModified("hot_sale") || this.isModified("price")) {

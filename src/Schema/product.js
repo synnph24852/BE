@@ -61,3 +61,20 @@ export const categorySchema = Joi.object({
     "string.base": "Category phải là 1 String",
   }),
 });
+export const imageProductSchema = Joi.object({
+  image: Joi.string().required().messages({
+    "string.empty": "Image không được để trống",
+    "any.required": "Trường Image này là bắt buộc",
+    "string.base": "Image phải là 1 String",
+  }),
+  trang_thai: Joi.string().valid("active", "deactive").required().messages({
+    "string.empty": "Trạng thái không được để trống",
+    "any.required": "Trường Trạng thái này là bắt buộc",
+    "string.base": "Trạng thái phải là 1 String",
+  }),
+  // productId: Joi.string().required().messages({
+  //   "string.empty": "ProductId không được để trống",
+  //   "any.required": "Trường ProductId này là bắt buộc",
+  //   "string.base": "ProductId phải là 1 String",
+  // }),
+});
