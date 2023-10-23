@@ -10,7 +10,10 @@ const image_newsSchema = new Schema(
       ref: "news",
     },
   },
-  { timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 }, versionKey: false }
+  {
+    timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 },
+    versionKey: false,
+  }
 );
 image_newsSchema.pre("save", function (next) {
   next();
