@@ -1,12 +1,18 @@
-import mongoose from "mongoose";
-const categorySchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-    },
-    products: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
-  },
-  { timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 }, versionKey: false }
-);
+import mongoose from 'mongoose'
 
-export default mongoose.model("Category", categorySchema);
+const { Schema } = mongoose
+const Category = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    desciption: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+})
+export default mongoose.model("category", Category)
