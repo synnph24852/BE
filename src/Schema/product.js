@@ -61,3 +61,38 @@ export const categorySchema = Joi.object({
     "string.base": "Category phải là 1 String",
   }),
 });
+export const newsSchema = Joi.object({
+  noidung: Joi.string().required().messages({
+    "string.empty": "Nội dung không được để trống",
+    "any.required": "Trường nội dung này là bắt buộc",
+    "string.base": "Nội dung phải là 1 String",
+  }),
+  trang_thai: Joi.string().required().messages({
+    "string.empty": "trạng thái không được để trống",
+    "any.required": "Trường trạng thái này là bắt buộc",
+    "string.base": "trạng thái phải là 1 string",
+  }),
+  tieude: Joi.string().required().messages({
+    "string.empty": "tiêu đề không được để trống",
+    "any.required": "Trường tiêu đề này là bắt buộc",
+    "string.base": "tiêu đề phải là 1 string",
+  }),
+});
+export const image_newsSchema = Joi.object({
+  trang_thai: Joi.string().required().messages({
+    "string.empty": "trạng thái không được để trống",
+    "any.required": "Trường trạng thái này là bắt buộc",
+    "string.base": "trạng thái phải là 1 string",
+  }),
+  image: Joi.array().required().messages({
+    "string.empty": "image không được để trống",
+    "any.required": "Trường image này là bắt buộc ",
+    "string.base": "image phải là 1 string",
+  }),
+  Id_news: Joi.string().required().messages({
+    "string.empty": "Id_news  không được để trống",
+    "any.required": "Trường Id_news này là bắt buộc",
+    "string.base": "Id_news phải là 1 string",
+  }),
+});
+
