@@ -5,6 +5,15 @@ export const signupSchema = Joi.object({
     "string.empty": 'Trường "tên" không được để trống',
     "any.required": 'Trường "tên" là bắt buộc',
   }),
+  fullname: Joi.string().required().messages({
+    "string.empty": 'Trường "tên khách hàng" không được để trống',
+    "any.required": 'Trường "tên khách hàng" là bắt buộc',
+  }),
+  ngaysinh:Joi.date().iso().required().messages({
+    "date.base": 'Trường "ngày sinh" phải là kiểu ngày tháng hợp lệ',
+    "date.empty": 'Trường "ngày sinh" không được để trống',
+    "any.required": 'Trường "ngày sinh" là bắt buộc',
+  }),
   email: Joi.string().email().required().messages({
     "string.empty": 'Trường "email" không được để trống',
     "string.email": 'Trường "email" không đúng định dạng',
