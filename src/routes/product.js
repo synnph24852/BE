@@ -7,7 +7,7 @@ import {
   update,
   // updatePartial,
 } from "../controllers/product.js";
-import { checkPermission } from "../middlewares/checkPermission..js";
+import { checkPermission } from "../middlewares/checkPermission.js";
 const router = express.Router();
 router.get("/products", getAll);
 router.get("/products/:id", get);

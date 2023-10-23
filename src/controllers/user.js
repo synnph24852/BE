@@ -18,9 +18,6 @@ const transporter = nodemailer.createTransport({
 });
 
 export const signup = async (req, res) => {
-
-  const { name, fullname, ngaysinh, status, email, password, image_url } = req.body;
-
   const { name,fullname, email, password, image_url } = req.body;
   try {
     // validate đầu vào
@@ -44,8 +41,6 @@ export const signup = async (req, res) => {
     const user = await User.create({
       name,
       fullname,
-      ngaysinh,
-      status,
       email,
       image_url,
       password: hashedPassword,
