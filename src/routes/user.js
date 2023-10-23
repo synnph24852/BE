@@ -2,7 +2,7 @@ import express from "express";
 import {
     signin, signup, getAll, remove, update, get
 } from "../controllers/user";
-import { checkPermission } from "../middlewares/checkPermission.";
+import { checkPermission } from "../middlewares/checkPermission.js";
 
 const router = express.Router();
 router.get("/user", getAll);

@@ -1,10 +1,11 @@
-import Category from "../models/category";
-// import CategorySchema from "../Schema/category.js"
+import Information from "../models/information";
+// import InformationSchema from "../Schema/information.js"
+
 export const get = async (req, res) => {
     try {
-        const data = await Category.find()
+        const data = await Information.find()
         return res.send({
-            message: "Tìm danh mục thành công",
+            message: "complete !",
             data: data
         })
     } catch (err) {
@@ -16,29 +17,29 @@ export const get = async (req, res) => {
 
 export const getById = async (req, res) => {
     const id = req.params.id
-    const data = await Category.findById(id)
+    const data = await Information.findById(id)
     if (data) {
         res.send({
-            message: "Tìm danh mục thành công",
+            message: "complete !",
             data: data
         })
     } else {
-        res.status(404).send("Danh mục không tồn tại")
+        res.status(404).send("Không tồn tại")
     }
     res.end()
 }
 
 export const create = async (req, res) => {
     try {
-        const { error } = CategorySchema.validate(req.body);
+        const { error } = InformationSchema.validate(req.body);
         if (error) {
             return res.status(400).json({
               message: error.details[0].message,
             });
           }
-          
+
         const body = req.body
-        const data = await Category.create(body)
+        const data = await Information.create(body)
         res.send({
             message: "Thêm mới thành công",
             data: data
@@ -52,16 +53,16 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
     try {
-      const data = await Category.findByIdAndUpdate(req.params.id, req.body, {
+      const data = await Information.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
       });
       if (!data) {
         return res.status(404).json({
-          message: "Không tìm thấy thương hiệu",
+          message: "Không tìm thấy ",
         });
       }
       return res.status(200).json({
-        message: "Sửa thương hiệu thành công",
+        message: "Sửa thành công",
         data,
       });
     } catch (error) {
@@ -74,9 +75,9 @@ export const update = async (req, res) => {
 
   export const remove = async (req, res) => {
     try {
-        const data = await Category.findByIdAndDelete(req.params.id);
+        const data = await Information.findByIdAndDelete(req.params.id);
         return res.status(200).json({
-            message: "Xóa thương hiệu thành công",
+            message: "Xóa thành công",
             data,
         });
     } catch (error) {

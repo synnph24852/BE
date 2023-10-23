@@ -1,17 +1,18 @@
 import express from "express";
 import {
-  add,
-  deleteCategory,
+  create,
+  remove,
   get,
-  getAll,
+  getById,
   update,
 } from "../controllers/category";
-import { checkPermission } from "../middlewares/checkPermission.";
+import { checkPermission } from "../middlewares/checkPermission.js";
+// import { checkPermission } from "../middlewares/checkPermission.";
 const router = express.Router();
-router.get("/categorys", getAll);
-router.get("/categorys/:id", get);
-router.post("/categorys", add);
-router.put("/categorys/:id", update);
-router.delete("/categorys/:id", deleteCategory);
+router.get("/categorys", get);
+router.get("/categorys/:id", getById);
+router.post("/categorys", create);
+router.patch("/categorys/:id", update);
+router.delete("/categorys/:id", remove);
 
 export default router;
