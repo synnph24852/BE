@@ -13,15 +13,14 @@ import routerComment from "./routes/comment.js";
 import routerAddress from "./routes/address.js";
 import routerNews from "./routes/tb_new.js";
 import routerimage_news from "./routes/image_news.js";
+import routerImageProduct from "./routes/imageProduct.js";
 //config
 const app = express();
 const API_DB = process.env.API_DB;
 dotenv.config();
-
 // middleware
 app.use(cors());
 app.use(express.json());
-
 // router
 app.use("/api", routerProduct);
 app.use("/api", routerSize);
@@ -34,6 +33,7 @@ app.use("/api", routerComment);
 app.use("/api", routerAddress);
 app.use("/api", routerNews);
 app.use("/api", routerimage_news);
+app.use("/api", routerImageProduct);
 // database config
 mongoose.connect(API_DB);
 export const viteNodeApp = app;
