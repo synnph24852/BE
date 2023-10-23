@@ -7,7 +7,7 @@ import {
     updateAddress
 
 } from "../controllers/address";
-import { checkPermission } from "../middlewares/checkPermission.";
+import { checkPermission } from "../middlewares/checkPermission.js";
 const router = express.Router();
 router.get("/address", GetAll);
 router.get("/address/:id", getAddressById);

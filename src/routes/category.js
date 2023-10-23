@@ -6,7 +6,7 @@ import {
   getAll,
   update,
 } from "../controllers/category";
-import { checkPermission } from "../middlewares/checkPermission.";
+import { checkPermission } from "../middlewares/checkPermission.js";
 const router = express.Router();
 router.get("/categorys", getAll);
 router.get("/categorys/:id", get);
