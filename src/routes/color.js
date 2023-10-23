@@ -6,7 +6,7 @@ import {
   removeColor,
   updateColor,
 } from "../controllers/color";
-import { checkPermission } from "../middlewares/checkPermission.";
+import { checkPermission } from "../middlewares/checkPermission.js";
 const router = express.Router();
 router.get("/color", getAllColor);
 router.get("/color/:id", getColor);

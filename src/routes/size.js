@@ -6,7 +6,7 @@ import {
   removeSize,
   updateSize,
 } from "../controllers/size";
-import { checkPermission } from "../middlewares/checkPermission.";
+import { checkPermission } from "../middlewares/checkPermission.js";
 const router = express.Router();
 router.get("/size", getAllSize);
 router.get("/size/:id", getSize);
