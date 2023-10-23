@@ -4,15 +4,12 @@ export const productSchema = Joi.object({
     "string.empty": "Name không được để trống",
     "any.required": "Trường Name này là bắt buộc",
     "string.base": "Name phải là 1 string",
-    "string.min": "Mật khẩu phải có ít nhất {#limit} ký tự",
+    "string.min": "name phải có ít nhất {#limit} ký tự",
   }),
   price: Joi.number().required().messages({
     "string.empty": "Price không được để trống",
     "any.required": "Trường Price này là bắt buộc",
     "number.base": "Price phải là 1 số",
-  }),
-  priceSale: Joi.number().messages({
-    "number.base": "priceSale phải là 1 số",
   }),
   description: Joi.string().required().messages({
     "string.empty": "description không được để trống",
@@ -24,27 +21,33 @@ export const productSchema = Joi.object({
     "any.required": "Trường image này là bắt buộc ",
     "string.base": "image phải là 1 string",
   }),
-  colorSizes: Joi.array().required(),
-  hot_sale: Joi.number(),
+  // colorSizes: Joi.array().required(),
+  sizes: Joi.array().required(),
+  sale: Joi.number(),
   description_short: Joi.string(),
-  featured: Joi.boolean(),
-  isVisible: Joi.boolean(),
-  rating: Joi.number().messages({
-    "number.base": "Rating phải là 1 số",
-  }),
   quantity: Joi.number().messages(),
-  inventoryStatus: Joi.string(),
   categoryId: Joi.string().required().messages({
     "string.empty": "categoryId không được để trống",
     "any.required": "Trường categoryId này là bắt buộc",
     "string.base": "categoryId phải là 1 string",
   }),
+  trang_thai: Joi.string().valid("active", "deactive").required().messages({
+    "string.empty": "Trạng thái không được để trống",
+    "any.required": "Trường Trạng thái này là bắt buộc",
+    "string.base": "Trạng thái phải là 1 string",
+  }),
+  is_delete: Joi.boolean(),
 });
 export const sizeSchema = Joi.object({
   name: Joi.string().required().messages({
     "string.empty": "Size không được để trống",
     "any.required": "Trường Size này là bắt buộc",
     "string.base": "Size phải là 1 string",
+  }),
+  quantity: Joi.number().required().messages({
+    "number.empty": "Quantity không được để trống",
+    "any.required": "Trường Quantity này là bắt buộc",
+    "number.base": "Quantity phải là 1 number",
   }),
 });
 export const colorSchema = Joi.object({
@@ -61,38 +64,20 @@ export const categorySchema = Joi.object({
     "string.base": "Category phải là 1 String",
   }),
 });
-export const newsSchema = Joi.object({
-  noidung: Joi.string().required().messages({
-    "string.empty": "Nội dung không được để trống",
-    "any.required": "Trường nội dung này là bắt buộc",
-    "string.base": "Nội dung phải là 1 String",
+export const imageProductSchema = Joi.object({
+  image: Joi.string().required().messages({
+    "string.empty": "Image không được để trống",
+    "any.required": "Trường Image này là bắt buộc",
+    "string.base": "Image phải là 1 String",
   }),
-  trang_thai: Joi.string().required().messages({
-    "string.empty": "trạng thái không được để trống",
-    "any.required": "Trường trạng thái này là bắt buộc",
-    "string.base": "trạng thái phải là 1 string",
+  trang_thai: Joi.string().valid("active", "deactive").required().messages({
+    "string.empty": "Trạng thái không được để trống",
+    "any.required": "Trường Trạng thái này là bắt buộc",
+    "string.base": "Trạng thái phải là 1 String",
   }),
-  tieude: Joi.string().required().messages({
-    "string.empty": "tiêu đề không được để trống",
-    "any.required": "Trường tiêu đề này là bắt buộc",
-    "string.base": "tiêu đề phải là 1 string",
-  }),
+  // productId: Joi.string().required().messages({
+  //   "string.empty": "ProductId không được để trống",
+  //   "any.required": "Trường ProductId này là bắt buộc",
+  //   "string.base": "ProductId phải là 1 String",
+  // }),
 });
-export const image_newsSchema = Joi.object({
-  trang_thai: Joi.string().required().messages({
-    "string.empty": "trạng thái không được để trống",
-    "any.required": "Trường trạng thái này là bắt buộc",
-    "string.base": "trạng thái phải là 1 string",
-  }),
-  image: Joi.array().required().messages({
-    "string.empty": "image không được để trống",
-    "any.required": "Trường image này là bắt buộc ",
-    "string.base": "image phải là 1 string",
-  }),
-  Id_news: Joi.string().required().messages({
-    "string.empty": "Id_news  không được để trống",
-    "any.required": "Trường Id_news này là bắt buộc",
-    "string.base": "Id_news phải là 1 string",
-  }),
-});
-

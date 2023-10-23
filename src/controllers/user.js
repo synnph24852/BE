@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const signup = async (req, res) => {
-  const { name, email, password, image_url } = req.body;
+  const { name, fullname, ngaysinh, status, email, password, image_url } = req.body;
   try {
     // validate đầu vào
     const { error } = signupSchema.validate(req.body, { abortEarly: false });
@@ -40,6 +40,9 @@ export const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const user = await User.create({
       name,
+      fullname,
+      ngaysinh,
+      status,
       email,
       image_url,
       password: hashedPassword,
