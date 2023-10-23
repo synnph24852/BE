@@ -14,6 +14,7 @@ export const signupSchema = Joi.object({
     "date.empty": 'Trường "ngày sinh" không được để trống',
     "any.required": 'Trường "ngày sinh" là bắt buộc',
   }),
+
   email: Joi.string().email().required().messages({
     "string.empty": 'Trường "email" không được để trống',
     "string.email": 'Trường "email" không đúng định dạng',
