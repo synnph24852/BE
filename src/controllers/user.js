@@ -18,7 +18,9 @@ const transporter = nodemailer.createTransport({
 });
 
 export const signup = async (req, res) => {
-  const { name,fullname, email, password, image_url } = req.body;
+  const { name, fullname, ngaysinh, status, email, password, image_url } =
+    req.body;
+
   try {
     // validate đầu vào
     const { error } = signupSchema.validate(req.body, { abortEarly: false });
@@ -152,13 +154,16 @@ export const remove = async (req, res) => {
 export const update = async (req, res) => {
   try {
     // Lấy thông tin user từ cơ sở dữ liệu
-    const user = await User.findById(req.params.id).populate('addressUser');
+    const user = await User.findById(req.params.id).populate("addressUser");
     if (!user) {
       return res.status(404).json({ message: "Không tìm thấy user" });
     }
 
     // So sánh mật khẩu cũ đã hash với mật khẩu mới được gửi từ client
-    const passwordsMatch = await bcrypt.compare(req.body.confirmPassword, user.password);
+    const passwordsMatch = await bcrypt.compare(
+      req.body.confirmPassword,
+      user.password
+    );
     if (!passwordsMatch) {
       return res.status(400).json({ message: "Mật khẩu không khớp" });
     }
@@ -188,10 +193,9 @@ export const update = async (req, res) => {
   }
 };
 
-
 export const get = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate('addressUser')
+    const user = await User.findById(req.params.id).populate("addressUser");
     const favoriteProduct = await Product.find({
       _id: { $in: user.favoriteProducts },
     });
@@ -210,5 +214,4 @@ export const get = async (req, res) => {
       return res.status(400).json({ message: "Id không hợp lệ" });
     }
   }
-}
-
+};
