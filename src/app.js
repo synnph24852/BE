@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+import "dotenv/config.js";
 import cors from "cors";
 import routerCategory from "./routes/category.js";
 import routerContact from "./routes/contact.js"
@@ -13,11 +13,14 @@ import orderRoute from "./routes/orderRoute.js";
 import routerNews from "./routes/tb_new.js";
 import routerimage_news from "./routes/image_news.js";
 import routerImageProduct from "./routes/imageProduct.js";
+import paymentRouter from "./routes/payment.router.js";
+import saleRouter from './routes/sale.router.js'
+import routerPayment from './routes/vnpay.router.js'
+
 
 //config
 const app = express();
 const API_DB = process.env.API_DB;
-dotenv.config();
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -33,6 +36,9 @@ app.use("/api",orderRoute)
 app.use("/api", routerNews);
 app.use("/api", routerimage_news);
 app.use("/api", routerImageProduct);
+app.use("/api", routerPayment);
+app.use("/api/payments", paymentRouter);
+app.use("/api/sales", saleRouter);
 // database config
 mongoose.connect(API_DB);
 export const viteNodeApp = app;
