@@ -1,5 +1,5 @@
 import Information from "../models/information";
-// import InformationSchema from "../Schema/information.js"
+import {InformationSchema} from "../Schema/information.js"
 
 export const get = async (req, res) => {
     try {
