@@ -1,5 +1,5 @@
 import Contact from "../models/contact";
-// import ContactSchema from "../Schema/contact.js"
+import {ContactSchema} from "../Schema/contact.js"
 
 export const get = async (req, res) => {
     try {
