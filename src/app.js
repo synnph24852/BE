@@ -15,10 +15,10 @@ import routerNews from "./routes/tb_new.js";
 import routerimage_news from "./routes/image_news.js";
 import routerImageProduct from "./routes/imageProduct.js";
 import paymentRouter from "./routes/payment.router.js";
-import saleRouter from './routes/sale.router.js'
-import routerPayment from './routes/vnpay.router.js'
+import saleRouter from "./routes/sale.router.js";
+import routerPayment from "./routes/vnpay.router.js";
 import routerProduct from "./routes/product.js";
-
+import routerUser from "./routes/user.js";
 
 //config
 const app = express();
@@ -44,6 +44,7 @@ app.use("/api", routerPayment);
 app.use("/api/payments", paymentRouter);
 app.use("/api/sales", saleRouter);
 app.use("/api", routerProduct);
+app.use("/api", routerUser);
 
 // database config
 mongoose.connect(API_DB);
