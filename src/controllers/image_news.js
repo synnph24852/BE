@@ -2,12 +2,15 @@
 import Image_news from "../models/image_news";
 import { image_newsSchema } from "../Schema/product";
 export const getAll = async (req, res) => {
-
   //asc tăng dần
-  const { order = "createdAt", _limit = 100, keyword = "asc", news, } = req.query;
+  const {
+    order = "createdAt",
+    _limit = 100,
+    keyword = "asc",
+    news,
+  } = req.query;
   const filter = {};
   if (news) {
-
     filter["id_news"] = news; // Tạo bộ lọc cho trường Id_news
   }
   let option = {
@@ -55,22 +58,19 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
   try {
     //validate
-    const { error } = image_newsSchema.validate(req.body, { abortEarly: false });
+    const { error } = image_newsSchema.validate(req.body, {
+      abortEarly: false,
+    });
     if (error) {
       return res.status(400).json({
         message: error.details.map((error) => error.message),
       });
     }
     // Lấy thông tin từ request body
-    const {
-      image,
-      trang_thai,
-      Id_news,
-    } = req.body;
+    const { image, trang_thai, Id_news } = req.body;
 
     // Tạo sản phẩm mới với thông tin đã được format
     const image_news = await Image_news.create({
-
       image,
       trang_thai,
       Id_news,
@@ -95,7 +95,9 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
   try {
     // Validate
-    const { error } = image_newsSchema.validate(req.body, { abortEarly: false });
+    const { error } = image_newsSchema.validate(req.body, {
+      abortEarly: false,
+    });
     if (error) {
       return res.status(400).json({
         message: error.details.map((error) => error.message),
