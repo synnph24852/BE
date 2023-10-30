@@ -1,5 +1,5 @@
 import Joi from "joi";
-export const CategorySchema = joi.object({
+export const CategorySchema = Joi.object({
   name: Joi.string().required().messages({
     "string.empty": "Category không được để trống",
     "any.required": "Trường Category này là bắt buộc",
