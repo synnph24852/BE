@@ -19,7 +19,7 @@ import saleRouter from "./routes/sale.router.js";
 import routerPayment from "./routes/vnpay.router.js";
 import routerProduct from "./routes/product.js";
 import routerUser from "./routes/user.js";
-
+import routerCustomer from "./routes/customer.js";
 //config
 const app = express();
 const API_DB = process.env.API_DB;
@@ -45,6 +45,7 @@ app.use("/api/payments", paymentRouter);
 app.use("/api/sales", saleRouter);
 app.use("/api", routerProduct);
 app.use("/api", routerUser);
+app.use("/api", routerCustomer);
 
 // database config
 mongoose.connect(API_DB);

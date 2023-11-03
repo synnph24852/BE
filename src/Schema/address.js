@@ -43,8 +43,4 @@ export const addressSchema = Joi.object({
             "any.required": "Trường customerId này là bắt buộc",
             "string.base": "customerId phải là 1 string",
         })
-
-
-
-
 })
