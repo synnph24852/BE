@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const customerSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -21,10 +21,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-    },
-    role: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Role",
     },
     status: {
       type: String,
@@ -49,4 +45,5 @@ const userSchema = new mongoose.Schema(
   { timestamps: { currentTime: () => Date.now() + 7 * 60 * 60 * 1000 }, versionKey: false }
 );
 
-export default mongoose.model("User", userSchema);
+
+export default mongoose.model("Customer", customerSchema);

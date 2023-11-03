@@ -5,6 +5,7 @@ import {
   getRoleById,
   updateRole,
   deleteRole,
+  findRoleByName
 } from "../controllers/role";
 
 const router = express.Router();
@@ -13,5 +14,6 @@ router.get("/roles", getRoles);
 router.get("/roles/:roleId", getRoleById);
 router.put("/roles/:roleId", updateRole);
 router.delete("/roles/:roleId", deleteRole);
+router.get("/role/:roleName", findRoleByName)
 
 export default router;

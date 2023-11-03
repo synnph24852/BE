@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 
 const roleSchema = new mongoose.Schema({
-  role_id: { type: String },
-  role_name: { type: String },
+  role_name: { 
+    type: String
+  },
   description: { type: String },
   trang_thai: { type: String, enum: ["Active", "Inactive"], default: "Active" },
   customerId: {
