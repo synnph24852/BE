@@ -133,3 +133,23 @@ export const remove = async (req, res) => {
     }
   }
 };
+// export const remove = async (req, res) => {
+//   try {
+//     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+
+//     if (!deletedProduct) {
+//       return res.json({
+//         message: "Xóa sản phẩm không thành công hoặc sản phẩm không tồn tại!",
+//       });
+//     }
+
+//     return res.json({
+//       message: "Xóa sản phẩm thành công!",
+//       product: deletedProduct,
+//     });
+//   } catch (error) {
+//     if (error.name === "CastError") {
+//       return res.status(400).json({ message: "Id không hợp lệ" });
+//     }
+//   }
+// };
