@@ -1,18 +1,19 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 const Category = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    desciption: {
-      type: String,
-      required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-})
-export default mongoose.model("category", Category)
+  name: {
+    type: String,
+  },
+  desciption: {
+    type: String,
+  },
+  status: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+export default mongoose.model("category", Category);

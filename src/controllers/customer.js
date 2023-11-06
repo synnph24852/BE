@@ -1,5 +1,4 @@
-import User from "../models/user";
-import Role from "../models/role";
+import Customer from "../models/customer.js";
 import { signinSchema, signupSchema, updateSchema } from "../Schema/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -18,50 +17,39 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const signup = async (req, res) => {
-  const { name, fullname, ngaysinh, status, email, password, role: role_name, image_url } = req.body;
-  
+export const createCustomer = async (req, res) => {
+  const { name, fullname, ngaysinh, status, email, password, image_url } =
+    req.body;
+
   try {
     // validate đầu vào
     const { error } = signupSchema.validate(req.body, { abortEarly: false });
     if (error) {
       const errors = error.details.map((err) => err.message);
+
       return res.status(400).json({
         messages: errors,
       });
     }
-    
     // Kiểm tra trong db có tk không?
-    const userExist = await User.findOne({ email: req.body.email });
-    if (userExist) {
+    const customerExist = await Customer.findOne({ email: req.body.email });
+    if (customerExist) {
       return res.status(400).json({
         messages: "Email đã tồn tại",
       });
     }
-    
-    // Tìm vai trò trong db dựa trên role_name
-    const role = await Role.findOne({ role_name });
-    if (!role) {
-      return res.status(400).json({
-        messages: "Không tìm thấy vai trò",
-      });
-    }
-    
-    
     // Mã hóa mật khẩu
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    
-    // Tạo người dùng với vai trò và các thông tin khác
-    const user = await User.create({
+    const customer = await Customer.create({
       name,
       fullname,
       ngaysinh,
       email,
       image_url,
       password: hashedPassword,
-      role: role._id 
     });
-    user.password = undefined;
+    customer.password = undefined;
+
     // Gửi email thông báo tạo tài khoản thành công
     const mailOptions = {
       from: "your-email@example.com", // Địa chỉ email gửi
@@ -80,7 +68,7 @@ export const signup = async (req, res) => {
 
     return res.status(201).json({
       message: "Tạo tài khoản thành công",
-      user,
+      customer,
     });
   } catch (error) {
     res.status(500).json({
@@ -88,8 +76,7 @@ export const signup = async (req, res) => {
     });
   }
 };
-
-export const signin = async (req, res) => {
+export const signinCustomer = async (req, res) => {
   try {
     const { error } = signinSchema.validate(req.body, { abortEarly: false });
     if (error) {
@@ -100,25 +87,25 @@ export const signin = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
+    const customer = await Customer.findOne({ email: req.body.email });
+    if (!customer) {
       return res.status(400).json({
         messages: "Email không tồn tại",
       });
     }
 
-    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    const isMatch = await bcrypt.compare(req.body.password, customer.password);
     if (!isMatch) {
       return res.status(400).json({
         messages: "Sai mật khẩu",
       });
     }
-    const token = jwt.sign({ id: user._id }, SECRET_CODE, { expiresIn: "1d" });
-    user.password = undefined;
+    const token = jwt.sign({ id: customer._id }, SECRET_CODE, { expiresIn: "1d" });
+    customer.password = undefined;
     return res.status(200).json({
       message: "Đăng nhập thành công",
       accessToken: token,
-      user,
+      customer,
     });
   } catch (error) {
     res.status(500).json({
@@ -127,19 +114,20 @@ export const signin = async (req, res) => {
   }
 };
 
-export const getAll = async (req, res) => {
-  try {
-    const users = await User.find().populate('role', 'role_name');
 
-    if (users.length === 0) {
+export const getCustomers = async (req, res) => {
+  try {
+    const customers = await Customer.find();
+
+    if (customers.length === 0) {
       return res.json({
-        message: 'Không có user nào!',
+        message: "Không có customer nào!",
       });
     }
 
     return res.json({
-      message: 'Lấy danh sách user thành công!',
-      users,
+      message: "Lấy danh sách customer thành công!",
+      customers,
     });
   } catch (error) {
     return res.status(400).json({
@@ -148,17 +136,17 @@ export const getAll = async (req, res) => {
   }
 };
 
-export const remove = async (req, res) => {
+export const deleteCustomer = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) {
+    const customer = await Customer.findByIdAndDelete(req.params.id);
+    if (!customer) {
       return res.json({
-        message: "Xóa user không thành công",
+        message: "Xóa customer không thành công",
       });
     }
     return res.json({
-      message: "Xóa user thành công",
-      user,
+      message: "Xóa customer thành công",
+      customer,
     });
   } catch (error) {
     if (error.name === "CastError") {
@@ -167,12 +155,13 @@ export const remove = async (req, res) => {
   }
 };
 
-export const update = async (req, res) => {
+
+export const updateCustomer = async (req, res) => {
   try {
-    // Lấy thông tin user từ cơ sở dữ liệu
-    const user = await User.findById(req.params.id)
-    if (!user) {
-      return res.status(404).json({ message: "Không tìm thấy user" });
+    // Lấy thông tin customer từ cơ sở dữ liệu
+    const customer = await Customer.findById(req.params.id).populate("addressUser");
+    if (!customer) {
+      return res.status(404).json({ message: "Không tìm thấy customer" });
     }
 
     // So sánh mật khẩu cũ đã hash với mật khẩu mới được gửi từ client
@@ -187,20 +176,19 @@ export const update = async (req, res) => {
     }
     const passwordsMatch = await bcrypt.compare(
       req.body.confirmPassword,
-      user.password
+      customer.password
     );
     if (!passwordsMatch) {
       return res.status(400).json({ message: "Mật khẩu không khớp" });
     }
-
-    // Thực hiện update thông tin user
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+    // Thực hiện update thông tin customer
+    const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
 
     return res.json({
-      message: "Cập nhật thông tin user thành công!",
-      user: updatedUser,
+      message: "Cập nhật sản phẩm thành công!",
+      customer: updatedCustomer,
     });
   } catch (error) {
     if (error.name === "CastError") {
@@ -210,20 +198,21 @@ export const update = async (req, res) => {
   }
 };
 
-export const get = async (req, res) => {
+
+export const getCustomerById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate("addressUser");
+    const customer = await Customer.findById(req.params.id).populate("addressUser");
     const favoriteProduct = await Product.find({
-      _id: { $in: user.favoriteProducts },
+      _id: { $in: customer.favoriteProducts },
     });
-    if (!user) {
+    if (!customer) {
       return res.json({
-        message: "Lấy user không thành công!",
+        message: "Lấy customer không thành công!",
       });
     }
     return res.json({
-      message: "Lấy thông tin user thành công!",
-      user,
+      message: "Lấy thông tin customer thành công!",
+      customer,
       favoriteProduct,
     });
   } catch (error) {
@@ -232,3 +221,5 @@ export const get = async (req, res) => {
     }
   }
 };
+
+

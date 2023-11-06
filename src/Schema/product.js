@@ -57,13 +57,7 @@ export const colorSchema = Joi.object({
     "string.base": "Color phải là 1 string",
   }),
 });
-export const categorySchema = Joi.object({
-  name: Joi.string().required().messages({
-    "string.empty": "Category không được để trống",
-    "any.required": "Trường Category này là bắt buộc",
-    "string.base": "Category phải là 1 String",
-  }),
-});
+
 export const imageProductSchema = Joi.object({
   image: Joi.string().required().messages({
     "string.empty": "Image không được để trống",
@@ -75,9 +69,38 @@ export const imageProductSchema = Joi.object({
     "any.required": "Trường Trạng thái này là bắt buộc",
     "string.base": "Trạng thái phải là 1 String",
   }),
-  // productId: Joi.string().required().messages({
-  //   "string.empty": "ProductId không được để trống",
-  //   "any.required": "Trường ProductId này là bắt buộc",
-  //   "string.base": "ProductId phải là 1 String",
-  // }),
+});
+export const image_newsSchema = Joi.object({
+  image: Joi.array().required().messages({
+    "array.empty": "Image không được để trống",
+    "any.required": "Trường Image này là bắt buộc",
+    "array.base": "Image phải là 1 String",
+  }),
+  trang_thai: Joi.string().valid("active", "deactive").required().messages({
+    "string.empty": "Trạng thái không được để trống",
+    "any.required": "Trường Trạng thái này là bắt buộc",
+    "string.base": "Trạng thái phải là 1 String",
+  }),
+  Id_news: Joi.string().required().messages({
+    "string.empty": "categoryId không được để trống",
+    "any.required": "Trường categoryId này là bắt buộc",
+    "string.base": "categoryId phải là 1 string",
+  }),
+});
+export const newsSchema = Joi.object({
+  tieude: Joi.string().required().messages({
+    "string.empty": "Tiêu đề không được để trống",
+    "any.required": "Trường Tiêu đề này là bắt buộc",
+    "string.base": "Tiêu đề phải là 1 string",
+  }),
+  noidung: Joi.string().required().messages({
+    "number.empty": "Tiêu đề không được để trống",
+    "any.required": "Trường Tiêu đề này là bắt buộc",
+    "number.base": "Tiêu đề phải là 1 string",
+  }),
+  trang_thai: Joi.string().valid("active", "deactive").required().messages({
+    "string.empty": "Trạng thái không được để trống",
+    "any.required": "Trường Trạng thái này là bắt buộc",
+    "string.base": "Trạng thái phải là 1 String",
+  }),
 });
