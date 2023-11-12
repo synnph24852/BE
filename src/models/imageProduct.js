@@ -1,8 +1,9 @@
+import { array } from "joi";
 import mongoose from "mongoose";
 const imageProductSchema = new mongoose.Schema(
   {
     image: {
-      type: String,
+      type: Array,
     },
     trang_thai: {
       type: String,

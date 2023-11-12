@@ -2,34 +2,24 @@ import Size from "../models/size";
 import { sizeSchema } from "../Schema/product";
 export const getAllSize = async (req, res) => {
   try {
-    const size = await Size.find();
-    if (size.length === 0) {
-      return res.json({
-        message: "Không có size nào !",
-      });
+    const data = await Size.find();
+    if (data.length == 0) {
+      return res.status(404).json({ message: "Lấy tất size thất bại" });
+    } else {
+      return res.status(200).json(data);
     }
-    return res.json({
-      message: "Lấy danh sách size thành công !",
-      size,
-    });
   } catch (error) {
-    return res.status(400).json({
-      message: error.message,
-    });
+    return res.status(500).json({ message: error });
   }
 };
 export const getSize = async (req, res) => {
   try {
-    const size = await Size.findById(req.params.id);
-    if (!size) {
-      return res.json({
-        message: "Lấy size không thành công !",
-      });
+    const data = await Size.findById(req.params.id);
+    if (data.length == 0) {
+      return res.status(400).json({ message: "Lấy size 1 thất bại" });
+    } else {
+      return res.status(200).json(data);
     }
-    return res.json({
-      message: "Lấy 1 size thành công !",
-      size,
-    });
   } catch (error) {
     if (error.name === "CastError") {
       return res.status(400).json({ message: "Id không hợp lệ" });
@@ -38,69 +28,37 @@ export const getSize = async (req, res) => {
 };
 export const createSize = async (req, res) => {
   try {
-    //validate
-    const { error } = sizeSchema.validate(req.body, { abortEarly: false });
+    const { error } = sizeSchema.validate(req.body, {
+      abortEarly: false,
+    });
     if (error) {
-      return res.status(400).json({
-        message: error.details.map((error) => error.message),
-      });
+      return res.status(400).json({ message: error.details[0].message });
     }
-    //check name
-    const sizeAll = await Size.find();
-    const sizeName = sizeAll.find(
-      (size) => size.name.toLowerCase() === req.body.name.toLowerCase()
-    );
-    if (sizeName) {
-      return res.status(400).json({
-        message: "Tên size đã tồn tại !",
-      });
-    }
-    const size = await Size.create(req.body);
-    if (!size) {
-      return res.json({
-        message: "Thêm size không thành công! ",
-      });
-    }
-    return res.json({
-      message: "Thêm size thành công ",
-      size,
-    });
+    const size = new Size(req.body);
+    const newSize = await size.save();
+    res.status(200).json(newSize);
   } catch (error) {
-    return res.status(400).json({
-      message: error,
-    });
+    res.status(500).json({ error: "Could not create size" });
   }
 };
 export const updateSize = async (req, res) => {
   try {
-    //validate
-    const { error } = sizeSchema.validate(req.body, { abortEarly: false });
+    const { error } = sizeSchema.validate(req.body);
     if (error) {
-      return res.status(400).json({
-        message: error.details.map((error) => error.message),
-      });
+      return res.status(400).json({ message: error.message });
     }
-    //check name
-    const sizeAll = await Size.find();
-    const sizeName = sizeAll.find(
-      (size) => size.name.toLowerCase() === req.body.name.toLowerCase()
-    );
-    if (sizeName) {
-      return res.status(400).json({
-        message: "Tên size đã có trong danh sách hoặc đã tồn tại !!",
-      });
-    }
-    const size = await Size.findByIdAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-    });
+    const size = await Size.findById(req.params.id);
     if (!size) {
       return res.json({
         message: "Cập nhật size không thành công !",
       });
     }
+    const newSize = await Size.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     return res.json({
       message: "Cập nhật size thành công !",
-      size,
+      newSize,
     });
   } catch (error) {
     if (error.name === "CastError") {

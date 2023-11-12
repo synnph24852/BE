@@ -4,15 +4,17 @@ import Product from "../models/product";
 
 export const getAll = async (req, res) => {
   try {
-    const data = await imageProduct.find();
-
+    const data = await imageProduct.find().populate("products");
     if (data.length == 0) {
-      return res.status(404).json({ message: "Lấy tất ảnh thất bại" });
+      return res.status(400).json({ message: "Lấy danh sách ảnh thất bại" });
     } else {
-      return res.status(200).json(data);
+      return res.status(200).json({
+        message: "Lấy danh sách ảnh thành công",
+        data,
+      });
     }
   } catch (error) {
-    return res.status(500).json({ message: error });
+    return res.status(500).json({ message: message });
   }
 };
 export const get = async (req, res) => {
@@ -39,15 +41,18 @@ export const get = async (req, res) => {
 };
 export const add = async (req, res) => {
   try {
-    //validate
+    // Validate
     const { error } = imageProductSchema.validate(req.body, {
       abortEarly: false,
     });
+
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
+
     const data = await imageProduct.create(req.body);
-    if (data.length == 0) {
+
+    if (!data) {
       return res.status(400).json({ message: "Thêm ảnh thất bại" });
     } else {
       return res.status(200).json({
@@ -56,9 +61,10 @@ export const add = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(500).json({ message: message });
+    return res.status(500).json({ message: error.message });
   }
 };
+
 export const update = async (req, res) => {
   try {
     //validate
