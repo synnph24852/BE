@@ -8,9 +8,9 @@ import {
 } from "../controllers/image_news";
 import { checkPermission } from "../middlewares/checkPermission..js";
 const router = express.Router();
-router.get("/imagenews", getAll);
-router.get("/imagenews/:id", get);
-router.post("/imagenews/", create);
-router.put("/imagenews/:id", update);
-router.delete("/imagenews/:id", remove);
+router.get("/imagetintuc", getAll);
+router.get("/imagetintuc/:id", get);
+router.post("/imagetintuc/", create);
+router.put("/imagetintuc/:id", update);
+router.delete("/imagetintuc/:id", remove);
 export default router;

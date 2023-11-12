@@ -2,39 +2,16 @@
 import Image_news from "../models/image_news";
 import { image_newsSchema } from "../Schema/product";
 export const getAll = async (req, res) => {
-  //asc tăng dần
-  const {
-    order = "createdAt",
-    _limit = 100,
-    keyword = "asc",
-    news,
-  } = req.query;
-  const filter = {};
-  if (news) {
-    filter["id_news"] = news; // Tạo bộ lọc cho trường Id_news
-  }
-  let option = {
-    limit: _limit,
-    sort: {
-      [order]: keyword === "asc" ? 1 : -1,
-    },
-  };
   try {
-    const image_news = await Image_news.paginate(filter, option);
+    const data = await Image_news.find();
 
-    if (image_news.length === 0) {
-      return res.json({
-        message: "Không có tin tức nào !",
-      });
+    if (data.length == 0) {
+      return res.status(404).json({ message: "Lấy tất cả " });
+    } else {
+      return res.status(200).json(data);
     }
-    return res.json({
-      message: "Lấy danh sách tin tức thành công !",
-      image_news,
-    });
   } catch (error) {
-    return res.status(400).json({
-      message: error.message,
-    });
+    return res.status(500).json({ message: error });
   }
 };
 export const get = async (req, res) => {
@@ -42,11 +19,11 @@ export const get = async (req, res) => {
     const image_news = await Image_news.findById(req.params.id);
     if (!image_news) {
       return res.json({
-        message: "Lấy sản phẩm không thành công !",
+        message: "Lấy ảnh  không thành công !",
       });
     }
     return res.json({
-      message: "Lấy 1 sản phẩm thành công !",
+      message: "Lấy 1 ảnh thành công !",
       image_news,
     });
   } catch (error) {
@@ -78,11 +55,11 @@ export const create = async (req, res) => {
 
     if (!image_news) {
       return res.json({
-        message: "Thêm sản phẩm không thành công!",
+        message: "Thêm không thành công!",
       });
     }
     return res.json({
-      message: "Thêm sản phẩm thành công",
+      message: "Thêm thành công",
       image_news,
     });
   } catch (error) {
@@ -105,8 +82,6 @@ export const update = async (req, res) => {
     }
     // Lấy thông tin sản phẩm từ yêu cầu
     const updatedimage_news = req.body;
-    // Tính toán số lượng tổng cộng từng kích thước và màu sắc
-    // Cập nhật số lượng tổng cộng và trạng thái tồn kho
     // Cập nhật sản phẩm
     const image_news = await Image_news.findByIdAndUpdate(
       req.params.id,
@@ -115,15 +90,13 @@ export const update = async (req, res) => {
         new: true,
       }
     );
-
     if (!image_news) {
       return res.json({
-        message: "Cập nhật sản phẩm không thành công!",
+        message: "Cập nhật không thành công!",
       });
     }
-
     return res.json({
-      message: "Cập nhật sản phẩm thành công!",
+      message: "Cập nhật thành công!",
       image_news,
     });
   } catch (error) {
@@ -139,11 +112,11 @@ export const remove = async (req, res) => {
     const image_news = await Image_news.findByIdAndDelete(req.params.id);
     if (!image_news) {
       return res.json({
-        message: "Xóa sản phẩm không thành công",
+        message: "Xóa không thành công",
       });
     }
     return res.json({
-      message: "Xóa sản phẩm thành công",
+      message: "Xóa thành công",
       image_news,
     });
   } catch (error) {
