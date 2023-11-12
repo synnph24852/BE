@@ -2,14 +2,10 @@ import mongoose from "mongoose";
 const sizeSchema = new mongoose.Schema(
   {
     name: {
-      type: String,
+      type: Number,
     },
     quantity: {
       type: Number,
-    },
-    productId: {
-      type: mongoose.Types.ObjectId,
-      ref: "Product",
     },
   },
   {
