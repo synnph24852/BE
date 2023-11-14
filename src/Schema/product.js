@@ -39,10 +39,10 @@ export const productSchema = Joi.object({
   is_delete: Joi.boolean(),
 });
 export const sizeSchema = Joi.object({
-  name: Joi.string().required().messages({
-    "string.empty": "Size không được để trống",
+  name: Joi.number().required().messages({
+    "number.empty": "Size không được để trống",
     "any.required": "Trường Size này là bắt buộc",
-    "string.base": "Size phải là 1 string",
+    "number.base": "Size phải là 1 number",
   }),
   quantity: Joi.number().required().messages({
     "number.empty": "Quantity không được để trống",
@@ -57,18 +57,12 @@ export const colorSchema = Joi.object({
     "string.base": "Color phải là 1 string",
   }),
 });
-export const categorySchema = Joi.object({
-  name: Joi.string().required().messages({
-    "string.empty": "Category không được để trống",
-    "any.required": "Trường Category này là bắt buộc",
-    "string.base": "Category phải là 1 String",
-  }),
-});
+
 export const imageProductSchema = Joi.object({
-  image: Joi.string().required().messages({
-    "string.empty": "Image không được để trống",
+  image: Joi.array().required().messages({
+    "array.empty": "Image không được để trống",
     "any.required": "Trường Image này là bắt buộc",
-    "string.base": "Image phải là 1 String",
+    "array.base": "Image phải là 1 array",
   }),
   trang_thai: Joi.string().valid("active", "deactive").required().messages({
     "string.empty": "Trạng thái không được để trống",
@@ -76,12 +70,11 @@ export const imageProductSchema = Joi.object({
     "string.base": "Trạng thái phải là 1 String",
   }),
 });
-
 export const image_newsSchema = Joi.object({
-  image: Joi.string().required().messages({
-    "string.empty": "Image không được để trống",
+  image: Joi.array().required().messages({
+    "array.empty": "Image không được để trống",
     "any.required": "Trường Image này là bắt buộc",
-    "string.base": "Image phải là 1 String",
+    "array.base": "Image phải là 1 String",
   }),
   trang_thai: Joi.string().valid("active", "deactive").required().messages({
     "string.empty": "Trạng thái không được để trống",
