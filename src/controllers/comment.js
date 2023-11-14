@@ -37,21 +37,35 @@ export const createComment = async (req, res) => {
   }
 };
 // Lấy danh sách bình luận
+// export const getComments = async (req, res) => {
+//   try {
+//     const comments = await Comment.find().sort({ createdAt: "desc" });
+//     if (!comments) {
+//       return res.json({
+//         message: "Không có bình luận nào !",
+//       });
+//     }
+//     res.json({
+//       message: "Lấy danh sách bình luận thành công !",
+//       comments,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 export const getComments = async (req, res) => {
   try {
-    const comments = await Comment.find().sort({ createdAt: "desc" });
-    if (!comments) {
-      return res.json({
-        message: "Không có bình luận nào !",
-      });
+    const data = await Comment
+    .find();
+
+    if (data.length == 0) {
+      return res.status(404).json({ message: "Lấy tất cả " });
+    } else {
+      return res.status(200).json(data);
     }
-    res.json({
-      message: "Lấy danh sách bình luận thành công !",
-      comments,
-    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: error });
   }
 };
 //  xóa bình luận
@@ -59,8 +73,8 @@ export const deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findOneAndDelete({
       _id: req.params.commentId,
-      userId: req.params.userId,
-      productId: req.params.productId,
+      // userId: req.params.userId,
+      // productId: req.params.productId,
     });
 
     if (!comment) {
