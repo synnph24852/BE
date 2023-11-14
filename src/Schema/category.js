@@ -9,9 +9,9 @@ export const CategorySchema = joi.object({
     "string.desciption": "Mô tả không đủ độ dài yêu cầu",
     "string.empty": "Mô tả không được để trống",
   }),
-  status: Joi.string().valid("active", "deactive").required().messages({
-    "string.empty": "Trạng thái không được để trống",
-    "any.required": "Trường Trạng thái này là bắt buộc",
-    "string.base": "Trạng thái phải là 1 string",
-  }),
+  // status: Joi.string().valid("active", "deactive").required().messages({
+  //   "string.empty": "Trạng thái không được để trống",
+  //   "any.required": "Trường Trạng thái này là bắt buộc",
+  //   "string.base": "Trạng thái phải là 1 string",
+  // }),
 });

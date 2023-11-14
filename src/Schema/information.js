@@ -15,12 +15,12 @@ export const InformationSchema = Joi.object({
         "any.required": "Trường Phone này là bắt buộc",
         "number.base": "Phone phải là số",
     }),
-    image: Joi.array().required().messages({
+    image: Joi.string().required().messages({
         "string.empty": "image không được để trống",
         "any.required": "Trường image này là bắt buộc ",
         "string.base": "image phải là 1 string",
     }),
-    logo: Joi.array().required().messages({
+    logo: Joi.string().required().messages({
         "string.empty": "logo không được để trống",
         "any.required": "Trường logo này là bắt buộc ",
         "string.base": "logo phải là 1 string",
@@ -35,9 +35,9 @@ export const InformationSchema = Joi.object({
         "any.required": "Tên store này là bắt buộc",
         "string.base": "Tên store phải là 1 string",
     }),
-    status: Joi.string().valid("active", "deactive").required().messages({
-        "string.empty": "Trạng thái không được để trống",
-        "any.required": "Trường Trạng thái này là bắt buộc",
-        "string.base": "Trạng thái phải là 1 string",
-    }),
+    // status: Joi.string().valid("active", "deactive").required().messages({
+    //     "string.empty": "Trạng thái không được để trống",
+    //     "any.required": "Trường Trạng thái này là bắt buộc",
+    //     "string.base": "Trạng thái phải là 1 string",
+    // }),
 });
