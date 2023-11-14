@@ -3,6 +3,11 @@ import {CategorySchema} from "../Schema/category"
 export const get = async (req, res) => {
     try {
         const data = await Category.find()
+        if (data.length === 0) {
+          return res.json({
+            message: "Không có sản phẩm nào !",
+          });
+        }
         return res.send({
             message: "Tìm danh mục thành công",
             data: data
@@ -17,6 +22,7 @@ export const get = async (req, res) => {
 export const getById = async (req, res) => {
     const id = req.params.id
     const data = await Category.findById(id)
+    
     if (data) {
         res.send({
             message: "Tìm danh mục thành công",
