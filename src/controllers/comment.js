@@ -73,8 +73,8 @@ export const deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findOneAndDelete({
       _id: req.params.commentId,
-      userId: req.params.userId,
-      productId: req.params.productId,
+      // userId: req.params.userId,
+      // productId: req.params.productId,
     });
 
     if (!comment) {
