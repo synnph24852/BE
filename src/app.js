@@ -48,7 +48,6 @@ app.use("/api/payments", paymentRouter);
 app.use("/api/sales", saleRouter);
 app.use("/api", routerProduct);
 app.use("/api", routerUser);
-HEAD;
 app.use("/api", routerSize);
 
 app.use("/api", routerCustomer);
