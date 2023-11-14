@@ -22,10 +22,7 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    status: {
-      type: String,
-      trang_thai: { type: String, enum: ["Active", "Inactive"], default: "Active" },
-    },
+    trang_thai: { type: String, enum: ["Active", "Inactive"], default: "Active" },
     image_url: {
       type: String,
     },

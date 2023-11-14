@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const signup = async (req, res) => {
-  const { name, fullname, ngaysinh, status, email, password, role: role_name, image_url } = req.body;
+  const { name, fullname, ngaysinh, trang_thai, email, password, role_name, image_url } = req.body;
   
   try {
     // validate đầu vào
