@@ -27,6 +27,9 @@ export const signupSchema = Joi.object({
   role: Joi.string().messages({
     "string.empty": 'Trường "role" không được để trống',
   }),
+  role_name: Joi.string().messages({
+    "string.empty": 'Trường "role_name" không được để trống',
+  }),
   image_url: Joi.string().messages({
     "string.empty": 'Trường "image_url" không được để trống',
   }),
@@ -50,6 +53,9 @@ export const signinSchema = Joi.object({
   }),
 });
 export const updateSchema = Joi.object({
+  _id: Joi.string().messages({
+    "string.empty": 'Trường "id" không được để trống',
+  }),
   name: Joi.string().required().messages({
     "string.empty": 'Trường "tên" không được để trống',
     "any.required": 'Trường "tên" là bắt buộc',

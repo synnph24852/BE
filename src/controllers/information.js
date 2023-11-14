@@ -4,6 +4,11 @@ import {InformationSchema} from "../Schema/information.js"
 export const get = async (req, res) => {
     try {
         const data = await Information.find()
+        if (data.length === 0) {
+          return res.json({
+            message: "Không có sản phẩm nào !",
+          });
+        }
         return res.send({
             message: "complete !",
             data: data

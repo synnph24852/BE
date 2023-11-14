@@ -26,10 +26,7 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Role",
     },
-    status: {
-      type: String,
-      trang_thai: { type: String, enum: ["Active", "Inactive"], default: "Active" },
-    },
+    trang_thai: { type: String, enum: ["Active", "Inactive"], default: "Active" },
     image_url: {
       type: String,
     },
