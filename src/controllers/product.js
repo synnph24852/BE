@@ -1,5 +1,5 @@
 import Product from "../models/product";
-import { productSchema } from "../Schema/product";
+import { productSchema, UpdateProduct } from "../Schema/product";
 export const getAll = async (req, res) => {
   try {
     const products = await Product.find({ is_deleted: false }).populate(
@@ -79,7 +79,7 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
   try {
     //validate
-    const { error } = productSchema.validate(req.body);
+    const { error } = UpdateProduct.validate(req.body);
     if (error) {
       return res.status(400).json({
         message: error.message,
