@@ -1,4 +1,4 @@
-import Orders from "../models/orders";
+import Orders from "../models/orders.js";
 import * as functions from "../service/functions.js";
 // đặt hàng 
 export const OrderUser = async (req, res, next) => {
@@ -39,3 +39,38 @@ export const GetDetailOrder = async (req, res, next) => {
         return functions.setError(res, error.message)
     }
 }
+export const GetAllOrder = async (req, res, next) => {
+    try {
+        
+        let data = await Orders.find({});
+        return functions.success(res, "get data success", { data })
+    } catch (error) {
+        return functions.setError(res, error.message)
+    }
+}
+
+export const deleteOrder = async (req, res, next) => {
+    try {
+        const {_id}=req.query;
+        let data = await Orders.deleteOne({_id});
+        return functions.success(res, "delete data success", { data })
+    } catch (error) {
+        return functions.setError(res, error.message)
+    }
+}
+export const updateOrder = async (req, res, next) => {
+    try {
+        const {_id,address,phone,status}=req.query;
+        var dd={};
+        if(address!="")dd={...dd,...{address}};
+        if(phone!="")dd={...dd,...{phone}};
+        if(status!="")dd={...dd,...{status}};
+
+        console.log(req.query)
+        let data = await Orders.updateOne({_id},{ $set: dd });
+        return functions.success(res, "update data success", { data })
+    } catch (error) {
+        return functions.setError(res, error.message)
+    }
+}
+
