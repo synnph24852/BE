@@ -1,5 +1,5 @@
 // giống category
-import { newsSchema } from "../Schema/product";
+import { UpdatenewsSchema, newsSchema } from "../Schema/product";
 import News from "../models/tb_news";
 import Image_news from "../models/image_news";
 export const getAll = async (req, res) => {
@@ -17,17 +17,12 @@ export const getAll = async (req, res) => {
 };
 export const get = async (req, res) => {
   try {
-    const data = await News.findById(req.params.id).populate("image_news");
-    if (data.length == 0) {
+    const tintuc = await News.findOne({_id:req.params.id})
+    if (!tintuc) {
       return res.status(400).json({ message: "Lấy ảnh thất bại" });
-    } else {
-      const image_news = await Image_news.find({ Id_news: req.params.id });
-
-      return res.status(200).json({
-        ...data.toObject(),
-        image_news,
-      });
-    }
+    } 
+     res.status(200).json({ tieude
+      : tintuc.tieude, noidung:tintuc.noidung, trang_thai:tintuc.trang_thai});
   } catch (error) {
     if (error.tieude === "CastError") {
       return res.status(400).json({ message: "Id không hợp lệ" });
@@ -57,7 +52,13 @@ export const add = async (req, res) => {
 export const update = async (req, res) => {
   try {
     //validate
-    const { error } = newsSchema.validate(req.body);
+    // const { tieude,noidung, trang_thai } = req.body;
+    // const validation = updateRoleSchema.validate({
+    //   role_name,
+    //   description,
+    //   // trang_thai,
+    // });
+    const { error } = UpdatenewsSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }

@@ -1,6 +1,6 @@
 //giống product
 import Image_news from "../models/image_news";
-import { image_newsSchema } from "../Schema/product";
+import { image_newsSchema, Updateimage_newsSchema } from "../Schema/product";
 export const getAll = async (req, res) => {
   try {
     const data = await Image_news.find();
@@ -72,7 +72,8 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
   try {
     // Validate
-    const { error } = image_newsSchema.validate(req.body, {
+    const { error } = Updateimage_newsSchema
+    .validate(req.body, {
       abortEarly: false,
     });
     if (error) {
