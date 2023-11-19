@@ -2,9 +2,8 @@ import Product from "../models/product";
 import { productSchema, UpdateProduct } from "../Schema/product";
 export const getAll = async (req, res) => {
   try {
-    const products = await Product.find({ is_deleted: false }).populate(
-      "image"
-    );
+    const products = await Product.find({ is_deleted: false });
+
     if (products.length === 0) {
       return res.json({
         message: "Không có sản phẩm nào !",

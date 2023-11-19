@@ -99,18 +99,6 @@ export const colorSchema = Joi.object({
   }),
 });
 
-export const imageProductSchema = Joi.object({
-  image: Joi.array().required().messages({
-    "array.empty": "Image không được để trống",
-    "any.required": "Trường Image này là bắt buộc",
-    "array.base": "Image phải là 1 array",
-  }),
-  trang_thai: Joi.string().valid("active", "deactive").required().messages({
-    "string.empty": "Trạng thái không được để trống",
-    "any.required": "Trường Trạng thái này là bắt buộc",
-    "string.base": "Trạng thái phải là 1 String",
-  }),
-});
 export const image_newsSchema = Joi.object({
   image: Joi.array().required().messages({
     "array.empty": "Image không được để trống",

@@ -1,3 +1,4 @@
+import { array } from "joi";
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 import paginate from "mongoose-paginate-v2";
@@ -5,17 +6,12 @@ const productSchema = new Schema(
   {
     name: String,
     price: Number,
-    image: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: "imageProduct",
-      },
-    ],
+    image: array,
     description: String,
     quantity: Number,
     sale: {
-      type: Number,
-      default: 0,
+      type: mongoose.Types.ObjectId,
+      ref: "sale",
     },
     categoryId: {
       type: mongoose.Types.ObjectId,
