@@ -1,5 +1,5 @@
 import Color from "../models/color";
-import { colorSchema } from "../Schema/product";
+import { colorSchema } from "../Schema/color";
 export const getAllColor = async (req, res) => {
   try {
     const color = await Color.find();
@@ -89,9 +89,13 @@ export const updateColor = async (req, res) => {
         message: "Tên color đã có trong danh sách hoặc đã tồn tại !",
       });
     }
-    const color = await Color.findByIdAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-    });
+    const color = await Color.findByIdAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      {
+        new: true,
+      }
+    );
     if (!color) {
       return res.json({
         message: "Cập nhật color không thành công !",
