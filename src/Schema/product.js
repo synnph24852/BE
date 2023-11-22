@@ -124,6 +124,11 @@ export const newsSchema = Joi.object({
     "any.required": "Trường Trạng thái này là bắt buộc",
     "string.base": "Trạng thái phải là 1 String",
   }),
+  image: Joi.array().required().messages({
+    "array.empty": "Image không được để trống",
+    "any.required": "Trường Image này là bắt buộc",
+    "array.base": "Image phải là 1 String",
+  }),
 });
 export const UpdatenewsSchema = Joi.object({
   _id: Joi.string().messages({
@@ -143,6 +148,11 @@ export const UpdatenewsSchema = Joi.object({
     "string.empty": "Trạng thái không được để trống",
     "any.required": "Trường Trạng thái này là bắt buộc",
     "string.base": "Trạng thái phải là 1 String",
+  }),
+  image: Joi.array().required().messages({
+    "array.empty": "Image không được để trống",
+    "any.required": "Trường Image này là bắt buộc",
+    "array.base": "Image phải là 1 String",
   }),
 });
 export const Updateimage_newsSchema = Joi.object({
