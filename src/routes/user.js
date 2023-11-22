@@ -1,6 +1,6 @@
 import express from "express";
 import {
-    signin, signup, getAll, remove, update, get, signupUser, signOut, signout
+    signin, signup, getAll, remove, update, get, signupUser, signout
 } from "../controllers/user";
 import { checkPermission } from "../middlewares/checkPermission.js";
 
