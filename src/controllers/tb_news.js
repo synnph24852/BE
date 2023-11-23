@@ -17,12 +17,14 @@ export const getAll = async (req, res) => {
 };
 export const get = async (req, res) => {
   try {
-    const tintuc = await News.findOne({_id:req.params.id})
+    const tintuc = await News.findOne({ _id: req.params.id })
     if (!tintuc) {
       return res.status(400).json({ message: "Lấy ảnh thất bại" });
-    } 
-     res.status(200).json({ tieude
-      : tintuc.tieude, noidung:tintuc.noidung, trang_thai:tintuc.trang_thai,image:tintuc.image});
+    }
+    res.status(200).json({
+      tieude
+        : tintuc.tieude, noidung: tintuc.noidung, trang_thai: tintuc.trang_thai, image: tintuc.image
+    });
   } catch (error) {
     if (error.tieude === "CastError") {
       return res.status(400).json({ message: "Id không hợp lệ" });
@@ -34,19 +36,36 @@ export const add = async (req, res) => {
     //validate
     const { error } = newsSchema.validate(req.body, { abortEarly: false });
     if (error) {
-      return res.status(400).json({ message: error.details[0].message });
-    }
-    const data = await News.create(req.body);
-    if (data.length == 0) {
-      return res.status(400).json({ message: "Thêm  tin tức thất bại" });
-    } else {
-      return res.status(200).json({
-        message: "Thêm tin tức thành công",
-        data,
+      return res.status(400).json({
+        message: error.details.map((error) => error.message),
       });
     }
+    const {
+      tieude,
+      noidung,
+      image,
+      trang_thai,
+
+    } = req.body;
+    const tintuc = await News.create({
+      tieude,
+      noidung,
+      image,
+      trang_thai,
+    });
+    if (!tintuc) {
+      return res.json({
+        message: "Thêm không thành công !",
+      });
+    }
+    return res.json({
+      message: "Thêm tin tức thành công !",
+      tintuc ,
+    });
   } catch (error) {
-    return res.status(500).json({ message: message });
+    return res.status(400).json({
+      message: error.message,
+    });
   }
 };
 export const update = async (req, res) => {

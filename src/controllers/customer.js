@@ -52,10 +52,11 @@ export const createCustomer = async (req, res) => {
 
     // Gửi email thông báo tạo tài khoản thành công
     const mailOptions = {
-      from: "your-email@example.com", // Địa chỉ email gửi
+      from: "your-email@example.com", // Địa chỉ email gửi your-email@example.com
       to: email, // Địa chỉ email người nhận
-      subject: "Chào Mừng", // Tiêu đề email
-      text: "Chúc mừng bạn đã đăng ký thành công tài khoản", // Nội dung email
+      subject: "Chào Mừng đến với SneakerStore", // Tiêu đề email
+      text: "Chúc mừng bạn đã đăng ký thành công!", 
+
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
