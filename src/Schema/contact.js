@@ -20,10 +20,6 @@ export const ContactSchema = joi.object({
         "any.required": "Trường content này là bắt buộc ",
         "string.base": "content phải là 1 string",
     }),
-    // status: joi.string().valid("active", "deactive").required().messages({
-    //     "string.empty": "Trạng thái không được để trống",
-    //     "any.required": "Trường Trạng thái này là bắt buộc",
-    //     "string.base": "Trạng thái phải là 1 string",
-    // }),
+ 
 });
 

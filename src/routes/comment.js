@@ -8,7 +8,6 @@ import {
 } from "../controllers/comment.js";
 
 const router = express.Router();
-
 // Route tạo bình luận mới
 router.post("/comments", createComment);
 router.get("/comments/:id", getComment);

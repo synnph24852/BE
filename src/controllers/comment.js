@@ -10,23 +10,6 @@ export const createComment = async (req, res) => {
         message: "Thêm bình luận không thành công! ",
       });
     }
-    //tính trung bình
-    const product = await Product.findById(req.body.productId);
-    if (!product) {
-      return res.status(404).json({
-        message: "Không tìm thấy sản phẩm!",
-      });
-    }
-    product.totalComments += 1;
-    product.rating =
-      Math.round(
-        ((product.rating * (product.totalComments - 1) + comment.rating) /
-          product.totalComments) *
-          2
-      ) / 2;
-
-    await product.save(); // Lưu cập nhật vào model Product
-
     res.status(201).json({
       message: "Thêm bình luận thành công ",
       comment,
@@ -36,24 +19,6 @@ export const createComment = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-// Lấy danh sách bình luận
-// export const getComments = async (req, res) => {
-//   try {
-//     const comments = await Comment.find().sort({ createdAt: "desc" });
-//     if (!comments) {
-//       return res.json({
-//         message: "Không có bình luận nào !",
-//       });
-//     }
-//     res.json({
-//       message: "Lấy danh sách bình luận thành công !",
-//       comments,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// };
 export const getComments = async (req, res) => {
   try {
     const data = await Comment
@@ -68,6 +33,8 @@ export const getComments = async (req, res) => {
     return res.status(500).json({ message: error });
   }
 };
+
+
 //  xóa bình luận
 export const deleteComment = async (req, res) => {
   try {
@@ -155,3 +122,21 @@ export const getComment = async (req, res) => {
     }
   }
 };
+
+//   try {
+//     const comment = await Comment.findById(req.params.id);
+//     if (!comment) {
+//       return res.json({
+//         message: "Lấy bình luận không thành công !",
+//       });
+//     }
+//     return res.json({
+//       message: "Lấy 1 bình luận thành công !",
+//       comment,
+//     });
+//   } catch (error) {
+//     if (error.name === "CastError") {
+//       return res.status(400).json({ message: "Id không hợp lệ" });
+//     }
+//   }
+// };
