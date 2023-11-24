@@ -1,5 +1,35 @@
 import Product from "../models/product";
 import { productSchema, UpdateProduct } from "../Schema/product";
+// export const getAll = async (req, res) => {
+//   // const { _sort = "priceSale", _limit = 100, _order = "asc" } = req.query;
+//   // const option = {
+//   //   limit: _limit,
+//   //   sort: {
+//   //     [_sort]: _order === "asc" ? 1 : -1,
+//   //   },
+//   //   populate: "categoryId",
+//   // };
+//   try {
+//     const products = await Product.find({ is_deleted: false }).populate(
+//       "image"
+//     );
+//     // .paginate({}, option);
+//     if (products.length === 0) {
+//       return res.json({
+//         message: "Không có sản phẩm nào !",
+//       });
+//     }
+//     return res.json({
+//       message: "Lấy danh sách sản phẩm thành công !",
+//       products,
+//     });
+//   } catch (error) {
+//     return res.status(400).json({
+//       message: error.message,
+//     });
+//   }
+// };
+
 export const getAll = async (req, res) => {
   // const { _sort = "priceSale", _limit = 100, _order = "asc" } = req.query;
   // const option = {
@@ -10,18 +40,35 @@ export const getAll = async (req, res) => {
   //   populate: "categoryId",
   // };
   try {
-    const products = await Product.find({ is_deleted: false }).populate(
-      "image"
-    );
-    // .paginate({}, option);
+    const products = await Product.find({ is_deleted: false })
+      .populate("sale")
+      .populate("categoryId")
+    .populate("colorSizes.color")
+    .populate("colorSizes.sizes.size");
     if (products.length === 0) {
       return res.json({
         message: "Không có sản phẩm nào !",
       });
     }
+    console.log(products);
+    const productsWithSaleName = products.map((product) => ({
+      ...product._doc,
+      // sale: product.sale.sale,
+      categoryId: product.categoryId.name,
+      colorSizes: product.colorSizes.map((colorSize) => ({
+        ...colorSize._doc,
+        color: colorSize.color.name, // Thay đổi trường 'color' thành tên của 'color'
+        sizes: colorSize.sizes.map((size) => ({
+          ...size._doc,
+          size: size.size ? size.size.size : "No size", // Thay đổi trường 'size' thành tên của 'size'
+        })),
+      })),
+      // categoryId: product.categoryId.name,
+    }));
+
     return res.json({
       message: "Lấy danh sách sản phẩm thành công !",
-      products,
+      products: productsWithSaleName,
     });
   } catch (error) {
     return res.status(400).json({

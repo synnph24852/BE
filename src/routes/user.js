@@ -1,6 +1,6 @@
 import express from "express";
 import {
-    signin, signup, getAll, remove, update, get, signupUser, signout
+    signin, signup, getAll, remove, update, get, signupUser, signout, updateAdmin
 } from "../controllers/user";
 import { checkPermission } from "../middlewares/checkPermission.js";
 
@@ -9,6 +9,7 @@ router.get("/user", getAll);
 router.get("/user/:id", get);
 router.delete("/user/:id", remove);
 router.put("/user/:id", update);
+router.put("/userrole/:id", updateAdmin);
 router.post("/signup", signup);
 router.post("/signupuser", signupUser);
 router.post("/signin", signin);

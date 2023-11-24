@@ -83,3 +83,15 @@ export const updateSchema = Joi.object({
     "any.required": 'Trường "confirmPassword" là bắt buộc',
   }),
 });
+
+export const updateAdminSchema = Joi.object({
+  _id: Joi.string().messages({
+    "string.empty": 'Trường "id" không được để trống',
+  }),
+  role: Joi.string().messages({
+    "string.empty": 'Trường "role" không được để trống',
+  }),
+  role_name: Joi.string().messages({
+    "string.empty": 'Trường "role_name" không được để trống',
+  }),
+});
