@@ -1,50 +1,13 @@
 import Product from "../models/product";
 import { productSchema, UpdateProduct } from "../Schema/product";
-// export const getAll = async (req, res) => {
-//   // const { _sort = "priceSale", _limit = 100, _order = "asc" } = req.query;
-//   // const option = {
-//   //   limit: _limit,
-//   //   sort: {
-//   //     [_sort]: _order === "asc" ? 1 : -1,
-//   //   },
-//   //   populate: "categoryId",
-//   // };
-//   try {
-//     const products = await Product.find({ is_deleted: false }).populate(
-//       "image"
-//     );
-//     // .paginate({}, option);
-//     if (products.length === 0) {
-//       return res.json({
-//         message: "Không có sản phẩm nào !",
-//       });
-//     }
-//     return res.json({
-//       message: "Lấy danh sách sản phẩm thành công !",
-//       products,
-//     });
-//   } catch (error) {
-//     return res.status(400).json({
-//       message: error.message,
-//     });
-//   }
-// };
 
 export const getAll = async (req, res) => {
-  // const { _sort = "priceSale", _limit = 100, _order = "asc" } = req.query;
-  // const option = {
-  //   limit: _limit,
-  //   sort: {
-  //     [_sort]: _order === "asc" ? 1 : -1,
-  //   },
-  //   populate: "categoryId",
-  // };
   try {
     const products = await Product.find({ is_deleted: false })
       .populate("sale")
       .populate("categoryId")
-    .populate("colorSizes.color")
-    .populate("colorSizes.sizes.size");
+      .populate("colorSizes.color")
+      .populate("colorSizes.sizes.size");
     if (products.length === 0) {
       return res.json({
         message: "Không có sản phẩm nào !",
@@ -53,8 +16,8 @@ export const getAll = async (req, res) => {
     console.log(products);
     const productsWithSaleName = products.map((product) => ({
       ...product._doc,
-      // sale: product.sale.sale,
-      categoryId: product.categoryId.name,
+      sale: product.sale.sale,
+      categoryId: product.categoryId ? product.categoryId.name : "No category",
       colorSizes: product.colorSizes.map((colorSize) => ({
         ...colorSize._doc,
         color: colorSize.color.name, // Thay đổi trường 'color' thành tên của 'color'
@@ -63,7 +26,7 @@ export const getAll = async (req, res) => {
           size: size.size ? size.size.size : "No size", // Thay đổi trường 'size' thành tên của 'size'
         })),
       })),
-      // categoryId: product.categoryId.name,
+      categoryId: product.categoryId.name,
     }));
 
     return res.json({
@@ -79,16 +42,34 @@ export const getAll = async (req, res) => {
 
 export const get = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate("image");
+    const product = await Product.findById(req.params.id)
+      .populate("sale")
+      .populate("categoryId")
+      .populate("colorSizes.color")
+      .populate("colorSizes.sizes.size");
 
     if (!product) {
       return res.json({
         message: "Lấy sản phẩm không thành công !",
       });
     }
+    const productWithSaleName = {
+      ...product._doc,
+      sale: product.sale.sale,
+      categoryId: product.categoryId.name,
+      colorSizes: product.colorSizes.map((colorSize) => ({
+        ...colorSize._doc,
+        color: colorSize.color.name, // Thay đổi trường 'color' thành tên của 'color'
+        sizes: colorSize.sizes.map((size) => ({
+          ...size._doc,
+          size: size.size ? size.size.size : "No size", // Thay đổi trường 'size' thành tên của 'size'
+        })),
+      })),
+      categoryId: product.categoryId.name,
+    };
     return res.json({
       message: "Lấy 1 sản phẩm thành công !",
-      product,
+      product: productWithSaleName,
     });
   } catch (error) {
     if (error.name === "CastError") {
@@ -333,6 +314,20 @@ export const restoreProduct = async (req, res) => {
     if (error.name === "CastError") {
       return res.status(400).json({ message: "Id không hợp lệ" });
     }
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+export const searchProducts = async (req, res) => {
+  try {
+    const searchQuery = new RegExp(req.params.name, "i");
+    const products = await Product.find({ name: searchQuery });
+    return res.status(200).json({
+      message: "Sản phẩm tìm thấy",
+      products,
+    });
+  } catch (error) {
     return res.status(400).json({
       message: error.message,
     });
