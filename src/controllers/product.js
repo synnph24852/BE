@@ -1,5 +1,6 @@
 import Product from "../models/product";
 import { productSchema, UpdateProduct } from "../Schema/product";
+import mongoose from "mongoose";
 
 export const getAll = async (req, res) => {
   try {
@@ -16,17 +17,20 @@ export const getAll = async (req, res) => {
     console.log(products);
     const productsWithSaleName = products.map((product) => ({
       ...product._doc,
-      sale: product.sale.sale,
+      sale: product.sale ? product.sale.sale : "No sale", // Thay đổi trường 'sale' thành tên của 'sale'
       categoryId: product.categoryId ? product.categoryId.name : "No category",
       colorSizes: product.colorSizes.map((colorSize) => ({
         ...colorSize._doc,
-        color: colorSize.color.name, // Thay đổi trường 'color' thành tên của 'color'
+        color:
+          colorSize.color && colorSize.color.name
+            ? colorSize.color.name
+            : "No color", // Thay đổi trường 'color' thành tên của 'color'
         sizes: colorSize.sizes.map((size) => ({
           ...size._doc,
           size: size.size ? size.size.size : "No size", // Thay đổi trường 'size' thành tên của 'size'
         })),
       })),
-      categoryId: product.categoryId.name,
+      categoryId: product.categoryId ? product.categoryId.name : "No category",
     }));
 
     return res.json({
@@ -55,11 +59,11 @@ export const get = async (req, res) => {
     }
     const productWithSaleName = {
       ...product._doc,
-      sale: product.sale.sale,
+      sale: product.sale ? product.sale.sale : "No sale", // Thay đổi trường 'sale' thành tên của 'sale'
       categoryId: product.categoryId.name,
       colorSizes: product.colorSizes.map((colorSize) => ({
         ...colorSize._doc,
-        color: colorSize.color.name, // Thay đổi trường 'color' thành tên của 'color'
+        color: colorSize.color ? colorSize.color.name : "No color", // Thay đổi trường 'color' thành tên của 'color'
         sizes: colorSize.sizes.map((size) => ({
           ...size._doc,
           size: size.size ? size.size.size : "No size", // Thay đổi trường 'size' thành tên của 'size'
@@ -148,11 +152,19 @@ export const create = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    // Validate
     const { error } = productSchema.validate(req.body, { abortEarly: false });
     if (error) {
       return res.status(400).json({
         message: error.details.map((error) => error.message),
+      });
+    }
+
+    const id = req.params.id;
+
+    // Kiểm tra xem ID có hợp lệ không
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "ID sản phẩm không hợp lệ",
       });
     }
 
@@ -161,53 +173,49 @@ export const update = async (req, res) => {
     const { quantity, colorSizes } = updatedProduct;
 
     // Tính toán số lượng tổng cộng từng kích thước và màu sắc
-    let totalQuantity = 0;
-    colorSizes.forEach((colorSize) => {
-      colorSize.sizes.forEach((size) => {
-        totalQuantity += size.quantity;
-      });
+    // let totalQuantity = 0;
+    // for (let colorSize of colorSizes) {
+    //   for (let size of colorSize.sizes) {
+    //     if (!isNaN(size.quantity)) {
+    //       totalQuantity += size.quantity;
+    //     } else {
+    //       return res.status(400).json({
+    //         message: "Giá trị quantity không hợp lệ",
+    //       });
+    //     }
+    //   }
+    // }
+
+    // // Cập nhật số lượng tổng cộng và trạng thái tồn kho
+    // updatedProduct.quantity = totalQuantity;
+    // switch (true) {
+    //   case totalQuantity <= 0:
+    //     updatedProduct.inventoryStatus = "OUTOFSTOCK";
+    //     break;
+    //   case totalQuantity <= 10:
+    //     updatedProduct.inventoryStatus = "LOWSTOCK";
+    //     break;
+    //   default:
+    //     updatedProduct.inventoryStatus = "INSTOCK";
+    // }
+
+    const product = await Product.findByIdAndUpdate(id, updatedProduct, {
+      new: true,
     });
-
-    // Cập nhật số lượng tổng cộng và trạng thái tồn kho
-    updatedProduct.quantity = totalQuantity;
-    switch (true) {
-      case totalQuantity <= 0:
-        updatedProduct.inventoryStatus = "OUTOFSTOCK";
-        break;
-      case totalQuantity <= 10:
-        updatedProduct.inventoryStatus = "LOWSTOCK";
-        break;
-      default:
-        updatedProduct.inventoryStatus = "INSTOCK";
-    }
-
-    // Cập nhật sản phẩm
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      updatedProduct,
-      {
-        new: true,
-      }
-    );
 
     if (!product) {
-      return res.json({
-        message: "Cập nhật sản phẩm không thành công!",
+      return res.status(400).json({
+        message: "Không tìm thấy sản phẩm để cập nhật",
       });
     }
 
-    return res.json({
-      message: "Cập nhật sản phẩm thành công!",
-      product,
-    });
+    return res.json(product);
   } catch (error) {
-    if (error.name === "CastError") {
-      return res.status(400).json({ message: "Id không hợp lệ" });
-    }
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({
+      message: error.message,
+    });
   }
 };
-
 export const remove = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(
