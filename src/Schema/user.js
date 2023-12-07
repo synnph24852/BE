@@ -98,10 +98,22 @@ export const updateAdminSchema = Joi.object({
 
 export const changePasswordSchema = Joi.object({
   oldPassword: Joi.string().required().label('Mật khẩu cũ'),
-  newPassword: Joi.string().min(5).required().label('Mật khẩu mới').messages({
-      "string.empty": "newPassword không được để trống",
-      "string.min": "newPassword phải có ít nhất 5 ký tự",
-      "any.required": "newPassword là trường bắt buộc"
+  newPassword: Joi.string().min(6).required().label('Mật khẩu mới').messages({
+      "string.empty": "mật khẩu mới không được để trống",
+      "string.min": "mật khẩu mới phải có ít nhất 5 ký tự",
+      "any.required": "mật khẩu mới là trường bắt buộc"
+  }),
+  confirmPassword: Joi.string().required().valid(Joi.ref("newPassword")).messages({
+      "any.only": "Mật khẩu bạn vừa nhập không trùng khớp hãy nhập lại",
+      "any.required": "confirmPassword là trường bắt buộc",
+    }).options({ abortEarly: false }),
+});
+
+export const resetPasswordSchema = Joi.object({
+  newPassword: Joi.string().min(6).required().label('Mật khẩu mới').messages({
+      "string.empty": "mật khẩu mới không được để trống",
+      "string.min": "mật khẩu mới phải có ít nhất 6 ký tự",
+      "any.required": "mật khẩu mới là trường bắt buộc"
   }),
   confirmPassword: Joi.string().required().valid(Joi.ref("newPassword")).messages({
       "any.only": "Mật khẩu bạn vừa nhập không trùng khớp hãy nhập lại",
