@@ -209,7 +209,10 @@ export const update = async (req, res) => {
       });
     }
 
-    return res.json(product);
+    return res.json({
+      message: "Cập nhật sản phẩm thành công",
+      product: product,
+    });
   } catch (error) {
     return res.status(400).json({
       message: error.message,
